@@ -2,8 +2,8 @@ import java.awt.Container;
 
 import javax.swing.JFrame;
 
-public class ManyBalls extends JFrame {
-    public ManyBalls() {
+public class FesGame extends JFrame {
+    public FesGame() {
         // タイトルを設定
         setTitle("Prototype");
         // サイズ変更禁止
@@ -19,7 +19,7 @@ public class ManyBalls extends JFrame {
     }
 
     public static void main(String[] args) {
-        ManyBalls frame = new ManyBalls();
+        FesGame frame = new FesGame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
