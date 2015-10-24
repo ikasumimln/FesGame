@@ -10,9 +10,10 @@ public class Enemy {
     protected int vx, vy;
 
     // コンストラクタ（新しい敵オブジェクトを作る工場）
-    public Enemy(int x, int vx) {
+    public Enemy(int x, int y, int vx) {
         // 敵の属性を設定
         this.x = x;
+        this.y = y;
         this.vx = vx;
     }
 
@@ -21,8 +22,7 @@ public class Enemy {
         x += vx;
 
         //初期座標をランダムに
-        y = (int)(Math.random() * (MainPanel.NUM_ENEMY)) * 50 + 160;
-     // 左または右に当たったらx方向速度の符号を反転させる
+        // 左または右に当たったらx方向速度の符号を反転させる
         if (x < 0 || x > MainPanel.WIDTH - SIZE) {
             vx = -vx;
         }

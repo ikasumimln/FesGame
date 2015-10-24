@@ -40,12 +40,12 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
         // 敵を格納する配列を作成
         enemy = new Enemy[NUM_ENEMY];
         // 敵を作成
-        enemy[0] = new Enemy(0, 10);
-        enemy[1] = new Enemy(0, 10);
-        enemy[2] = new Enemy(0, 10);
-        enemy[3] = new Enemy(0, 10);
-        enemy[4] = new Enemy(0, 10);
-        enemy[5] = new Enemy(0, 10);
+        enemy[0] = new Enemy(0, 160, 10);
+        enemy[1] = new Enemy(0, 210, 10);
+        enemy[2] = new Enemy(0, 260, 10);
+        enemy[3] = new Enemy(0, 310, 10);
+        enemy[4] = new Enemy(0, 360, 10);
+        enemy[5] = new Enemy(0, 410, 10);
 
     	// 線を格納する配列を作成
         line = new Line[NUM_LINE];
@@ -97,14 +97,8 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
         	requestFocus();
 
             // 各敵を速度分だけ移動させる
-            for (int i = 0; i < NUM_ENEMY;) {
+            for (int i = 0; i < NUM_ENEMY; i++) {
                 enemy[i].move();
-                try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-                i++;
             }
             //自機の移動
             for (int k = 0; k < NUM_OWN; k++) {
