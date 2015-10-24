@@ -1,30 +1,19 @@
 import java.applet.Applet;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class Own extends Applet implements KeyListener{
+public class Own extends Applet{
     // 自機の位置の左上の座標(x, y)
     private int x, y;
     //自機の幅, 高さ(WIDTH, HEIGHT)
-    private int WIDTH = 22, HEIGHT = 40;
+    private int WIDTH = 22, HEIGHT = 35;
     // 自機の速度 (vx, vy)
     protected int vx, vy;
-    //キー押下フラグ
-    private boolean keyLeft, keyRight;
     //自機画像(22*40px)
     private Image own;
 
     public void init() {
-    	// キーフラグをクリア
-    	keyLeft = keyRight = false;
-    	// 画像読み込み
-    	own = getImage(getDocumentBase(), "Own.gif");
-    	// キー入力の受け付け開始
-    	addKeyListener(this);
-    	// フォーカスを要求
-    	requestFocus();
+    	own = getImage(getCodeBase(), "Own.gif");
     }
     // コンストラクタ（新しい自機オブジェクトを作る工場）
     public Own(int x, int y, int vx, int vy) {
@@ -40,14 +29,12 @@ public class Own extends Applet implements KeyListener{
         y += vy;
 
         // 左移動
-     	if (keyLeft) {
+     	if (MainPanel.keyLeft) {
      		x -= vx;
-     		if (x < 0) x = 0;
      	}
      	// 右移動
-     	if (keyRight) {
+     	if (MainPanel.keyRight) {
      		x += vx;
-     		if (x > MainPanel.WIDTH - WIDTH) x = MainPanel.WIDTH - WIDTH;
      	}
 
      // 上または下のLineに当たったらy方向速度の符号を反転させる
@@ -56,31 +43,8 @@ public class Own extends Applet implements KeyListener{
         }
     }
 
-
-    // キーが押されたときの処理
-    public void keyPressed(KeyEvent e) {
-    	switch (e.getKeyCode()) {
-			// 左キーが押されたとき
-    		case KeyEvent.VK_LEFT: keyLeft = true; break;
-    		// 右キーが押されたとき
-    		case KeyEvent.VK_RIGHT: keyRight = true; break;
-    	}
-    }
- // キーが離されたときの処理
-    public void keyReleased(KeyEvent e) {
-    	switch (e.getKeyCode()) {
-    		// 左キーが離されたとき
-    		case KeyEvent.VK_LEFT: keyLeft = false; break;
-    		// 右キーが離されたとき
-    		case KeyEvent.VK_RIGHT: keyRight = false; break;
-    	}
-    }
-
-    // キーがタイプされたときの処理
-    public void keyTyped(KeyEvent e) {}
-
-    public void paint(Graphics g) {
-    	g.drawImage(own, x, y, this);
+    public void draw(Graphics g) {
+    	g.drawRect(x, y, WIDTH, HEIGHT);
     }
 }
 
