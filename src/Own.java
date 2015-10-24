@@ -13,6 +13,7 @@ public class Own extends Applet{
     private Image own;
 
     public void init() {
+    	//画像読み込み(動かない)
     	own = getImage(getCodeBase(), "Own.gif");
     }
     // コンストラクタ（新しい自機オブジェクトを作る工場）
@@ -44,6 +45,7 @@ public class Own extends Applet{
     }
 
     public void draw(Graphics g) {
+    	//一時的に自機は四角形で代用
     	g.drawRect(x, y, WIDTH, HEIGHT);
     }
 }

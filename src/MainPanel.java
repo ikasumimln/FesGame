@@ -1,5 +1,7 @@
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
@@ -7,14 +9,16 @@ import javax.swing.JPanel;
  * Created on 2006/02/24
  */
 
-public class MainPanel extends JPanel implements Runnable {
+public class MainPanel extends JPanel implements Runnable, KeyListener {
 	// パネルサイズ
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
     // 線のy座標
     public static final double y1 = 140.0d, y2 = 460.0d;
+    //キー押下フラグ
+    public static boolean keyLeft = false, keyRight = false;
     // 敵、線の数
-    private static final int NUM_ENEMY = 6;
+    public static final int NUM_ENEMY = 6;
     private static final int NUM_LINE = 2;
     private static final int NUM_OWN = 3;
     // 敵、線、自機を格納する配列
@@ -23,6 +27,10 @@ public class MainPanel extends JPanel implements Runnable {
     private Own[] own;
     // アニメーション用スレッド
     private Thread thread;
+    //デス数
+    int score;
+    // シーン(0:タイトル 1:メイン 2:ゲームオーバー)
+	int scene;
 
     public MainPanel() {
         // パネルの推奨サイズを設定、pack()するときに必要
@@ -32,12 +40,12 @@ public class MainPanel extends JPanel implements Runnable {
         // 敵を格納する配列を作成
         enemy = new Enemy[NUM_ENEMY];
         // 敵を作成
-        enemy[0] = new Enemy(0, 160, 10, 0);
-        enemy[1] = new Enemy(0, 210, 10, 0);
-        enemy[2] = new Enemy(0, 260, 10, 0);
-        enemy[3] = new Enemy(0, 310, 10, 0);
-        enemy[4] = new Enemy(0, 360, 10, 0);
-        enemy[5] = new Enemy(0, 410, 10, 0);
+        enemy[0] = new Enemy(0, 10);
+        enemy[1] = new Enemy(0, 10);
+        enemy[2] = new Enemy(0, 10);
+        enemy[3] = new Enemy(0, 10);
+        enemy[4] = new Enemy(0, 10);
+        enemy[5] = new Enemy(0, 10);
 
     	// 線を格納する配列を作成
         line = new Line[NUM_LINE];
@@ -51,6 +59,11 @@ public class MainPanel extends JPanel implements Runnable {
         own[0] = new Own(378, (int) y1, 9, 12);
         own[1] = new Own(1178, (int) y1, 9, 12);
         own[2] = new Own(-422, (int )y1, 9, 12);
+
+        // キー入力の受け付け開始
+    	addKeyListener(this);
+    	// フォーカスを要求
+    	requestFocus();
 
         // スレッドを起動
         thread = new Thread(this);
@@ -70,7 +83,7 @@ public class MainPanel extends JPanel implements Runnable {
         }
         //自機を描画
         for (int k = 0; k < NUM_OWN; k++) {
-            own[k].paint(g);
+            own[k].draw(g);
         }
     }
 
@@ -78,9 +91,20 @@ public class MainPanel extends JPanel implements Runnable {
     public void run() {
         // プログラムが終了するまでフレーム処理を繰り返す
         while (true) {
+            // キー入力の受け付け開始
+        	addKeyListener(this);
+        	// フォーカスを要求
+        	requestFocus();
+
             // 各敵を速度分だけ移動させる
-            for (int i = 0; i < NUM_ENEMY; i++) {
+            for (int i = 0; i < NUM_ENEMY;) {
                 enemy[i].move();
+                try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+                i++;
             }
             //自機の移動
             for (int k = 0; k < NUM_OWN; k++) {
@@ -97,4 +121,29 @@ public class MainPanel extends JPanel implements Runnable {
             }
         }
     }
+
+
+	@Override
+    // キーが押されたときの処理
+    public void keyPressed(KeyEvent e) {
+    	switch (e.getKeyCode()) {
+			// 左キーが押されたとき
+    		case KeyEvent.VK_LEFT: keyLeft = true; break;
+    		// 右キーが押されたとき
+    		case KeyEvent.VK_RIGHT: keyRight = true; break;
+    	}
+    }
+ // キーが離されたときの処理
+    public void keyReleased(KeyEvent e) {
+    	switch (e.getKeyCode()) {
+    		// 左キーが離されたとき
+    		case KeyEvent.VK_LEFT: keyLeft = false; break;
+    		// 右キーが離されたとき
+    		case KeyEvent.VK_RIGHT: keyRight = false; break;
+    	}
+    }
+
+    // キーがタイプされたときの処理
+    public void keyTyped(KeyEvent e) {}
+
 }
