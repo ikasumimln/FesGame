@@ -1,6 +1,6 @@
 # FesGame
 Dodge
 
-##ƒƒ“ƒo[
+##ãƒ¡ãƒ³ãƒãƒ¼
 
 *testmember
