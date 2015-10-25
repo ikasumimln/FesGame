@@ -38,7 +38,7 @@ public class Own extends Applet{
      		x += vx;
      	}
 
-     // 上または下のLineに当たったらy方向速度の符号を反転させる
+     	// 上または下のLineに当たったらy方向速度の符号を反転させる
         if (y < MainPanel.y1 || y > MainPanel.y2 - HEIGHT) {
             vy = -vy;
         }

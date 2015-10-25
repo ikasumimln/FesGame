@@ -3,7 +3,7 @@ import java.awt.Graphics;
 
 public class Enemy {
 	// 敵の大きさ
-    private static final int SIZE = 30;
+    public static final int SIZE = 30;
     // 敵の位置 (x, y) □の左上の座標
     private int x, y;
     // 敵の速度 (vx, vy)
@@ -22,10 +22,15 @@ public class Enemy {
         x += vx;
 
         //初期座標をランダムに
-        // 左または右に当たったらx方向速度の符号を反転させる
+		if (x >= MainPanel.WIDTH) {
+			y = (int)(Math.random() * 5);
+			x = -SIZE;
+		}
+        /* 左または右に当たったらx方向速度の符号を反転させる
         if (x < 0 || x > MainPanel.WIDTH - SIZE) {
             vx = -vx;
         }
+        */
     }
 
     public void draw(Graphics g) {

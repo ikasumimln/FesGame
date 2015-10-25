@@ -21,6 +21,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
     public static final int NUM_ENEMY = 6;
     private static final int NUM_LINE = 2;
     private static final int NUM_OWN = 3;
+    private static final int SPACE =-Enemy.SIZE;
     // 敵、線、自機を格納する配列
     private Enemy[] enemy;
     private Line[] line;
@@ -40,12 +41,12 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
         // 敵を格納する配列を作成
         enemy = new Enemy[NUM_ENEMY];
         // 敵を作成
-        enemy[0] = new Enemy(0, 160, 10);
-        enemy[1] = new Enemy(0, 210, 10);
-        enemy[2] = new Enemy(0, 260, 10);
-        enemy[3] = new Enemy(0, 310, 10);
-        enemy[4] = new Enemy(0, 360, 10);
-        enemy[5] = new Enemy(0, 410, 10);
+        enemy[0] = new Enemy(SPACE, 160, 10);
+        enemy[1] = new Enemy(SPACE - 200, 210, 10);
+        enemy[2] = new Enemy(SPACE - 400, 260, 10);
+        enemy[3] = new Enemy(SPACE - 600, 310, 10);
+        enemy[4] = new Enemy(SPACE - 800, 360, 10);
+        enemy[5] = new Enemy(SPACE - 1000, 410, 10);
 
     	// 線を格納する配列を作成
         line = new Line[NUM_LINE];
@@ -104,6 +105,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
             for (int k = 0; k < NUM_OWN; k++) {
             	own[k].move();
             }
+
             // 再描画
             repaint();
 
