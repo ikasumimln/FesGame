@@ -21,17 +21,19 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
     public static final int NUM_ENEMY = 6;
     private static final int NUM_LINE = 2;
     private static final int NUM_OWN = 3;
-    private static final int SPACE =-Enemy.SIZE;
     // 敵、線、自機を格納する配列
     private Enemy[] enemy;
     private Line[] line;
     private Own[] own;
+    private int x[] = {-30, -230, -430, -630, -830, -1030};
+    public static int y[] = {160, 210, 260, 310, 360, 410};
     // アニメーション用スレッド
     private Thread thread;
     //デス数
     int score;
     // シーン(0:タイトル 1:メイン 2:ゲームオーバー)
 	int scene;
+	public static int i;
 
     public MainPanel() {
         // パネルの推奨サイズを設定、pack()するときに必要
@@ -41,12 +43,12 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
         // 敵を格納する配列を作成
         enemy = new Enemy[NUM_ENEMY];
         // 敵を作成
-        enemy[0] = new Enemy(SPACE, 160, 10);
-        enemy[1] = new Enemy(SPACE - 200, 210, 10);
-        enemy[2] = new Enemy(SPACE - 400, 260, 10);
-        enemy[3] = new Enemy(SPACE - 600, 310, 10);
-        enemy[4] = new Enemy(SPACE - 800, 360, 10);
-        enemy[5] = new Enemy(SPACE - 1000, 410, 10);
+        enemy[0] = new Enemy(x[0], y[0], 10);
+        enemy[1] = new Enemy(x[1], y[1], 10);
+        enemy[2] = new Enemy(x[2], y[2], 10);
+        enemy[3] = new Enemy(x[3], y[3], 10);
+        enemy[4] = new Enemy(x[4], y[4], 10);
+        enemy[5] = new Enemy(x[5], y[5], 10);
 
     	// 線を格納する配列を作成
         line = new Line[NUM_LINE];
@@ -98,7 +100,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
         	requestFocus();
 
             // 各敵を速度分だけ移動させる
-            for (int i = 0; i < NUM_ENEMY; i++) {
+            for (i = 0; i < NUM_ENEMY; i++) {
                 enemy[i].move();
             }
             //自機の移動

@@ -23,9 +23,10 @@ public class Enemy {
 
         //初期座標をランダムに
 		if (x >= MainPanel.WIDTH) {
-			y = (int)(Math.random() * 5);
-			x = -SIZE;
+			x = -430;
+			y = MainPanel.y[MainPanel.i];
 		}
+
         /* 左または右に当たったらx方向速度の符号を反転させる
         if (x < 0 || x > MainPanel.WIDTH - SIZE) {
             vx = -vx;
