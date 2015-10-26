@@ -16,15 +16,19 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
     // 線のy座標
     public static final double y1 = 140.0d, y2 = 460.0d;
     //キー押下フラグ
-    public static boolean keyLeft = false, keyRight = false;
+    public static boolean keyLeft, keyRight, keyEnter, keyEsc;
     // 敵、線の数
     public static final int NUM_ENEMY = 6;
     private static final int NUM_LINE = 2;
     private static final int NUM_OWN = 3;
+    private static final int NUM_TITLE = 3;
+    private static final int NUM_END = 3;
     // 敵、線、自機を格納する配列
     private Enemy[] enemy;
     private Line[] line;
     private Own[] own;
+    private Strings[] title;
+    private Strings[] end;
     private int x[] = {-30, -230, -430, -630, -830, -1030};
     public static int y[] = {160, 210, 260, 310, 360, 410};
     // アニメーション用スレッド
@@ -32,7 +36,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
     //デス数
     int score;
     // シーン(0:タイトル 1:メイン 2:ゲームオーバー)
-	int scene;
+	public static int scene = 0;
 	public static int i;
 
     public MainPanel() {
@@ -63,50 +67,98 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
         own[1] = new Own(1178, (int) y1, 9, 12);
         own[2] = new Own(-422, (int )y1, 9, 12);
 
-        // キー入力の受け付け開始
-    	addKeyListener(this);
-    	// フォーカスを要求
-    	requestFocus();
+        // 文字列を格納する配列を作成
+        title = new Strings[NUM_TITLE];
+        end = new Strings[NUM_END];
+        // 文字列を作成
+        title[0] = new Strings("HELLO", 300, 100, "Arial", 30);
+        title[1] = new Strings("HELLO", 300, 200, "Arial", 25);
+        title[2] = new Strings("HELLO", 300, 300, "Arial", 20);
+
+        end[0] = new Strings("HELLO", 300, 400, "Arial", 15);
+        end[1] = new Strings("HELLO", 300, 500, "Arial", 10);
+        end[2] = new Strings("HELLO", 300, 600, "Arial", 5);
 
         // スレッドを起動
         thread = new Thread(this);
         thread.start();
     }
 
+	public void run() {
+		while (thread == Thread.currentThread()) {
+			// ゲームメイン処理
+			switch (scene) {
+				case 0: GameTitle(); break;
+				case 1: GameMain(); break;
+				case 2: GameOver(); break;
+			}
+			// 20ミリ秒待つ
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				break;
+			}
+		}
+	}
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // 各敵を描画
-        for (int i = 0; i < NUM_ENEMY; i++) {
-            enemy[i].draw(g);
+        if(scene == 0){
+        	//文字列を描画
+            for (int l = 0; l < NUM_TITLE; l++) {
+                title[l].paintComponent(g);
+            }
         }
-        //線を描画
-        for (int j = 0; j < NUM_LINE; j++) {
-            line[j].paintComponent(g);
+        if(scene == 1){
+        	// 各敵を描画
+            for (int i = 0; i < NUM_ENEMY; i++) {
+                enemy[i].draw(g);
+            }
+            //線を描画
+            for (int j = 0; j < NUM_LINE; j++) {
+                line[j].paintComponent(g);
+            }
+            //自機を描画
+            for (int ii = 0; ii < NUM_OWN; ii++) {
+                own[ii].draw(g);
+            }
         }
-        //自機を描画
-        for (int k = 0; k < NUM_OWN; k++) {
-            own[k].draw(g);
+        if(scene == 2){
+        	//文字列を描画
+            for (int ll = 0; ll < NUM_END; ll++) {
+                end[ll].paintComponent(g);
+            }
         }
     }
 
-    // メインループ
-    public void run() {
-        // プログラムが終了するまでフレーム処理を繰り返す
-        while (true) {
-            // キー入力の受け付け開始
-        	addKeyListener(this);
-        	// フォーカスを要求
-        	requestFocus();
+	// ゲームタイトル処理
+	public void GameTitle() {
+		// キー入力の受け付け開始
+		addKeyListener(this);
+		// フォーカスを要求
+		requestFocus();
 
-            // 各敵を速度分だけ移動させる
-            for (i = 0; i < NUM_ENEMY; i++) {
-                enemy[i].move();
-            }
-            //自機の移動
-            for (int k = 0; k < NUM_OWN; k++) {
-            	own[k].move();
-            }
+		// エンターキーが押されたらシーンをゲームメインへ
+		if (keyEnter) scene = 1;
+	}
+
+	// メインループ
+	public void GameMain() {
+		// プログラムが終了するまでフレーム処理を繰り返す
+		while (true) {
+			// キー入力の受け付け開始
+			addKeyListener(this);
+			// フォーカスを要求
+			requestFocus();
+
+			// 各敵を速度分だけ移動させる
+			for (i = 0; i < NUM_ENEMY; i++) {
+				enemy[i].move();
+			}
+			//自機の移動
+			for (int ii = 0; ii < NUM_OWN; ii++) {
+				own[ii].move();
+			}
 
             // 再描画
             repaint();
@@ -120,6 +172,15 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
+	public void GameOver(){
+		// キー入力の受け付け開始
+		addKeyListener(this);
+		// フォーカスを要求
+		requestFocus();
+		// Escが押されたらシーンをタイトルへ
+		if (keyEnter)scene = 0;
+	}
+
 
 	@Override
     // キーが押されたときの処理
@@ -129,6 +190,10 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
     		case KeyEvent.VK_LEFT: keyLeft = true; break;
     		// 右キーが押されたとき
     		case KeyEvent.VK_RIGHT: keyRight = true; break;
+    		// Enterキーが押されたとき
+    		case KeyEvent.VK_ENTER: keyEnter = true; break;
+    		// Escキーが押されたとき
+    		case KeyEvent.VK_ESCAPE: keyEsc = true; break;
     	}
     }
  // キーが離されたときの処理
@@ -138,6 +203,10 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
     		case KeyEvent.VK_LEFT: keyLeft = false; break;
     		// 右キーが離されたとき
     		case KeyEvent.VK_RIGHT: keyRight = false; break;
+    		// Enterキーが離されたとき
+    		case KeyEvent.VK_ENTER: keyEnter = false; break;
+    		// Escキーが押されたとき
+    		case KeyEvent.VK_ESCAPE: keyEsc = false; break;
     	}
     }
 

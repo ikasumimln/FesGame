@@ -21,17 +21,14 @@ public class Enemy {
     	// 敵を速度分だけ移動させる
         x += vx;
 
-        //初期座標をランダムに
+        // 初期座標をランダムに
 		if (x >= MainPanel.WIDTH) {
 			x = -430;
 			y = MainPanel.y[MainPanel.i];
 		}
-
-        /* 左または右に当たったらx方向速度の符号を反転させる
-        if (x < 0 || x > MainPanel.WIDTH - SIZE) {
-            vx = -vx;
-        }
-        */
+		if (Own.jx > 0 && Own.jx + Own.WIDTH > x && Own.jx < x + SIZE && Own.jy + Own.HEIGHT > y && Own.jy < y + SIZE) {
+			MainPanel.scene = 2;
+		}
     }
 
     public void draw(Graphics g) {
