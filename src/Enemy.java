@@ -8,6 +8,7 @@ public class Enemy {
     private int x, y;
     // 敵の速度 (vx, vy)
     protected int vx, vy;
+    public static int ex,ey;
 
     // コンストラクタ（新しい敵オブジェクトを作る工場）
     public Enemy(int x, int y, int vx) {
@@ -18,6 +19,8 @@ public class Enemy {
     }
 
     public void move() {
+    	ex = x;
+    	ey = y;
     	// 敵を速度分だけ移動させる
         x += vx;
 
@@ -25,9 +28,6 @@ public class Enemy {
 		if (x >= MainPanel.WIDTH) {
 			x = -430;
 			y = MainPanel.y[MainPanel.i];
-		}
-		if (Own.jx > 0 && Own.jx + Own.WIDTH > x && Own.jx < x + SIZE && Own.jy + Own.HEIGHT > y && Own.jy < y + SIZE) {
-			MainPanel.scene = 2;
 		}
     }
 

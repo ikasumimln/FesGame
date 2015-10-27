@@ -2,7 +2,7 @@ import java.applet.Applet;
 import java.awt.Graphics;
 import java.awt.Image;
 
-public class Own extends Applet{
+public class Self extends Applet{
     // 自機の位置の左上の座標(x, y)
     private int x, y;
     //自機の幅, 高さ(WIDTH, HEIGHT)
@@ -10,16 +10,16 @@ public class Own extends Applet{
     // 自機の速度 (vx, vy)
     protected int vx, vy;
     //自機画像(22*40px)
-    private Image own;
+    private Image Self;
 
-    public static int jx, jy, jWIDTH, jHEIGHT;
+    public static int sx, sy;
 
     public void init() {
     	//画像読み込み(動かない)
-    	own = getImage(getCodeBase(), "Own.gif");
+    	Self = getImage(getCodeBase(), "Self.gif");
     }
     // コンストラクタ（新しい自機オブジェクトを作る工場）
-    public Own(int x, int y, int vx, int vy) {
+    public Self(int x, int y, int vx, int vy) {
         // 敵の属性を設定
         this.x = x;
         this.y = y;
@@ -44,8 +44,14 @@ public class Own extends Applet{
         if (y < MainPanel.y1 || y > MainPanel.y2 - HEIGHT) {
             vy = -vy;
         }
-        Own.jx = x;
-        Own.jy = y;
+        if(x + WIDTH > Enemy.ex &&
+        		x < Enemy.ex + Enemy.SIZE &&
+				y + HEIGHT > Enemy.ex &&
+				y < Enemy.ey + Enemy.SIZE) {
+						MainPanel.scene = 2;
+			}
+        sx = x;
+        sy = y;
     }
 
     public void draw(Graphics g) {
