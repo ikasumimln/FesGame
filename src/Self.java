@@ -34,22 +34,18 @@ public class Self extends Applet{
         // 左移動
      	if (MainPanel.keyLeft) {
      		x -= vx;
+     		if (x < 0) x = 0;
      	}
      	// 右移動
      	if (MainPanel.keyRight) {
      		this.x += vx;
+     		if (x > MainPanel.WIDTH - WIDTH) x = MainPanel.WIDTH - WIDTH;
      	}
 
      	// 上または下のLineに当たったらy方向速度の符号を反転させる
         if (y < MainPanel.y1 || y > MainPanel.y2 - HEIGHT) {
             vy = -vy;
         }
-        if(x + WIDTH > Enemy.ex &&
-        		x < Enemy.ex + Enemy.SIZE &&
-				y + HEIGHT > Enemy.ex &&
-				y < Enemy.ey + Enemy.SIZE) {
-						MainPanel.scene = 2;
-			}
         sx = x;
         sy = y;
     }
