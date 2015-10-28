@@ -6,7 +6,7 @@ public class Self extends Applet{
     // 自機の位置の左上の座標(x, y)
     private int x, y;
     //自機の幅, 高さ(WIDTH, HEIGHT)
-    public static int WIDTH = 22, HEIGHT = 35;
+    public static int WIDTH = 22, HEIGHT = 40;
     // 自機の速度 (vx, vy)
     protected int vx, vy;
     //自機画像(22*40px)
