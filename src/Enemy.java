@@ -23,12 +23,19 @@ public class Enemy {
     	ey = y;
     	// 敵を速度分だけ移動させる
         x += vx;
-
+        
         // 初期座標をランダムに
 		if (x >= MainPanel.WIDTH) {
 			x = -430;
-			y = MainPanel.y[MainPanel.i];
+			y = (int)(Math.random() * (MainPanel.y2 - MainPanel.y1 - SIZE))+ (int)MainPanel.y1;
+			//y = MainPanel.y[MainPanel.i];
 		}
+		if(Self.sx + Self.WIDTH > ex &&
+        		Self.sx < ex + SIZE &&
+				Self.sy + Self.HEIGHT > ey &&
+				Self.sy < ey + SIZE) {
+					MainPanel.scene = 2;
+			}
     }
 
     public void draw(Graphics g) {
