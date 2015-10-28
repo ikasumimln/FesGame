@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
+
 public class MainPanel extends JPanel implements Runnable, KeyListener {
 	// パネルサイズ
     public static final int WIDTH = 800;
@@ -13,26 +14,29 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
     public static final double y1 = 140.0d, y2 = 460.0d;
     //キー押下フラグ
     public static boolean keyLeft, keyRight, keyEnter, keyEsc, keyR;
-    // 敵、線の数
+    // 敵, 線の数
     public static final int NUM_ENEMY = 6;
     private static final int NUM_LINE = 2;
     private static final int NUM_TITLE = 3;
-    private static final int NUM_END = 3;
-    // 敵、線、自機を格納する配列
+    private static final int NUM_END = 4;
+    // 敵, 自機, 文字列を格納する配列
     private Enemy[] enemy;
     private Line[] line;
     private Self self;
     private Strings[] title;
     private Strings[] end;
+    //敵の初期座標(x, y)
     private int x[] = {-30, -230, -430, -630, -830, -1030};
     public static int y[] = {160, 210, 260, 310, 360, 410};
     // アニメーション用スレッド
     Thread gameThread;
-    //デス数
+    //スコア
     int score;
     // シーン(0:タイトル 1:メイン 2:ゲームオーバー)
 	public static int scene = 0;
+	//ループ用
 	public static int i;
+	private String time = TimeTask.time;
 
 	public MainPanel() {
 		// パネルの推奨サイズを設定、pack()するときに必要
@@ -57,7 +61,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			line[1] = new Line(0.0d, y2, 800.0d, y2, "BLACK");
 
 			// 自機を作成
-			self = new Self(378, (int )y1, 9, 15);
+			self = new Self(378, (int )y1, 9, 14);
 
 			// 文字列を格納する配列を作成
 			title = new Strings[NUM_TITLE];
@@ -67,9 +71,10 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	        title[1] = new Strings("こうやって油の中に指を", 240, 200, "メイリオ", 30);
 			title[2] = new Strings("アアアアアアアアアアーーーーーーーーー♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥", 0, 300, "メイリオ", 30);
 
-			end[0] = new Strings("GAME OVER", 300, 100, "Arial", 30);
-			end[1] = new Strings("PRESS ENTER TO TITLE", 300, 200, "Arial", 25);
-			end[2] = new Strings("PRESS R TO RETRY", 300, 300, "Arial", 20);
+			end[0] = new Strings("GAME OVER", 280, 200, "Arial", 40);
+			end[1] = new Strings(time + "sec", 280, 300, "Arial", 20);
+			end[2] = new Strings("Escキーでタイトル", 275, 400, "メイリオ", 30);
+			end[3] = new Strings("Rキーでリトライ", 288, 500, "メイリオ", 30);
 		}
 
         // スレッドを起動
@@ -141,6 +146,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	public void GameMain() {
 		// プログラムが終了するまでフレーム処理を繰り返す
 		while (scene != 2) {
+			System.out.println(time);
 			// キー入力の受け付け開始
 			addKeyListener(this);
 			// フォーカスを要求
