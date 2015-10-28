@@ -2,6 +2,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.NumberFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
@@ -36,7 +39,19 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	public static int scene = 0;
 	//ループ用
 	public static int i;
-	private String time = TimeTask.time;
+	public static double sec = 0;
+    public static String time;
+
+    //タイマー用main
+	public static void main(String[] args) {
+		if(scene == 1){
+			// タイマーインスタンス作成
+			TimeTask task = new TimeTask();
+			Timer timer = new Timer();
+			// タイマー開始　0.01秒ごとにタイマータスクTimeTaskを繰り返し
+			timer.schedule(task, 0, 10);
+		}
+}
 
 	public MainPanel() {
 		// パネルの推奨サイズを設定、pack()するときに必要
@@ -146,7 +161,6 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	public void GameMain() {
 		// プログラムが終了するまでフレーム処理を繰り返す
 		while (scene != 2) {
-			System.out.println(time);
 			// キー入力の受け付け開始
 			addKeyListener(this);
 			// フォーカスを要求
@@ -245,4 +259,15 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
     // キーがタイプされたときの処理
     public void keyTyped(KeyEvent e) {}
 
+}
+//TimerTask内部クラス
+class TimeTask extends TimerTask {
+  public void run() {
+  	MainPanel.i += 0.01;
+
+  	NumberFormat format = NumberFormat.getInstance();
+ 		format.setMaximumFractionDigits(2);
+ 		MainPanel.time = (format.format(MainPanel.i));
+ 		System.out.println(MainPanel.time);
+  }
 }
