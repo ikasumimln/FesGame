@@ -3,10 +3,9 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.NumberFormat;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 
 public class MainPanel extends JPanel implements Runnable, KeyListener {
@@ -20,7 +19,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
     // 敵, 線の数
     public static final int NUM_ENEMY = 6;
     private static final int NUM_LINE = 2;
-    private static final int NUM_TITLE = 3;
+    private static final int NUM_TITLE = 4;
     private static final int NUM_END = 4;
     // 敵, 自機, 文字列を格納する配列
     private Enemy[] enemy;
@@ -40,20 +39,15 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	//ループ用
 	public static int i;
 	public static double sec = 0;
-    public static String time;
-
-    //タイマー用main
-	public static void main(String[] args) {
-		if(scene == 1){
-			// タイマーインスタンス作成
-			TimeTask task = new TimeTask();
-			Timer timer = new Timer();
-			// タイマー開始　0.01秒ごとにタイマータスクTimeTaskを繰り返し
-			timer.schedule(task, 0, 10);
-		}
-}
+    public static Timer timer;
+    private String time;
 
 	public MainPanel() {
+		/*
+		TimerTask task = new TimerTask();
+		timer = new Timer(1000 , task);
+		timer.start();
+		*/
 		// パネルの推奨サイズを設定、pack()するときに必要
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setSize(WIDTH, HEIGHT);
@@ -82,14 +76,14 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			title = new Strings[NUM_TITLE];
 			end = new Strings[NUM_END];
 			// 文字列を作成
-			title[0] = new Strings("とんかつを作るにはな、", 250, 100, "メイリオ", 30);
-	        title[1] = new Strings("こうやって油の中に指を", 240, 200, "メイリオ", 30);
-			title[2] = new Strings("アアアアアアアアアアーーーーーーーーー♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥", 0, 300, "メイリオ", 30);
+			title[0] = new Strings("＼にゃんぱすー／", 280, 100, "メイリオ", 30);
+			title[1] = new Strings("左から右へ受け流すのん", 239, 200, "メイリオ", 30);
+	        title[2] = new Strings("左右キーで移動なん", 269, 300, "メイリオ", 30);
+			title[3] = new Strings("Enterキーで開始なのん", 245, 400, "メイリオ", 30);
 
 			end[0] = new Strings("GAME OVER", 280, 200, "Arial", 40);
-			end[1] = new Strings(time + "sec", 280, 300, "Arial", 20);
-			end[2] = new Strings("Escキーでタイトル", 275, 400, "メイリオ", 30);
-			end[3] = new Strings("Rキーでリトライ", 288, 500, "メイリオ", 30);
+			end[2] = new Strings("Escキーでタイトル", 277, 400, "メイリオ", 30);
+			end[3] = new Strings("Rキーでリトライ", 290, 450, "メイリオ", 30);
 		}
 
         // スレッドを起動
@@ -159,6 +153,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 
 	// メインループ
 	public void GameMain() {
+		long t1 = System.nanoTime();
 		// プログラムが終了するまでフレーム処理を繰り返す
 		while (scene != 2) {
 			// キー入力の受け付け開始
@@ -172,9 +167,16 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			}
 			//自機の移動
 			self.move();
-
             // 再描画
             repaint();
+            long t2 = System.nanoTime();
+    		sec = (t2 - t1)/1000000000.0;
+    		NumberFormat format = NumberFormat.getInstance();
+       		format.setMaximumFractionDigits(2);
+       		time = (format.format(sec));
+    		end[1] = new Strings(time + "秒逃げ切りました。", 250, 300, "メイリオ", 30);
+    		System.out.println(t2-t1);
+
             // 20ミリ秒だけ休止
             try {
                 Thread.sleep(20);
@@ -224,7 +226,6 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 		}
 	}
 
-
     // キーが押されたときの処理
     public void keyPressed(KeyEvent e) {
     	switch (e.getKeyCode()) {
@@ -259,15 +260,4 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
     // キーがタイプされたときの処理
     public void keyTyped(KeyEvent e) {}
 
-}
-//TimerTask内部クラス
-class TimeTask extends TimerTask {
-  public void run() {
-  	MainPanel.i += 0.01;
-
-  	NumberFormat format = NumberFormat.getInstance();
- 		format.setMaximumFractionDigits(2);
- 		MainPanel.time = (format.format(MainPanel.i));
- 		System.out.println(MainPanel.time);
-  }
 }
