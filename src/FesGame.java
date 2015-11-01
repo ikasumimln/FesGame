@@ -2,10 +2,12 @@ import java.awt.Container;
 
 import javax.swing.JFrame;
 
+
 public class FesGame extends JFrame {
+
     public FesGame() {
         // タイトルを設定
-        setTitle("Prototype");
+        setTitle("仮完成");
         // サイズ変更禁止
         setResizable(false);
 
@@ -13,7 +15,6 @@ public class FesGame extends JFrame {
         MainPanel panel = new MainPanel();
         Container contentPane = getContentPane();
         contentPane.add(panel);
-
         // パネルサイズに合わせてフレームサイズを自動設定
         pack();
     }
