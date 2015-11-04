@@ -1,7 +1,9 @@
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Enemy {
+public class Enemy{
 	// 敵の大きさ
 	public static final int SIZE = 30;
 	// 敵の位置 (x, y) □の左上の座標
@@ -10,6 +12,7 @@ public class Enemy {
 	private int vx;
 	//グローバル変数を作成
 	public static int ex,ey;
+	private AudioClip se = Applet.newAudioClip(this.getClass().getResource("death.wav"));
 
 	// コンストラクタ（新しい敵オブジェクトを作る工場）
 	public Enemy(int x, int y, int vx) {
@@ -30,16 +33,17 @@ public class Enemy {
 		if (x >= MainPanel.WIDTH) {
 			x = -430;
 			y = (int)(Math.random() * (MainPanel.y[5] - MainPanel.y[0])) + (int)MainPanel.y[0];
-			//y = MainPanel.y[MainPanel.i];
 		}
 		// 自機と敵の当たり判定
 		if(Self.sx + Self.WIDTH > ex &&
 			Self.sx < ex + SIZE &&
-				Self.sy + Self.HEIGHT > ey &&
-				Self.sy < ey + SIZE) {
-					// 敵に触れるとシーンをGameOve　rへ
-					MainPanel.scene = 2;
-			}
+			Self.sy + Self.HEIGHT > ey &&
+			Self.sy < ey + SIZE) {
+			// 敵に触れるとシーンをGameOverへ
+			MainPanel.scene = 2;
+			// デデドン(絶望)
+			se.play();
+		}
 	}
 	// 敵の描画
 	public void draw(Graphics g) {
