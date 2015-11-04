@@ -29,7 +29,7 @@ public class Enemy {
 		// 初期座標をランダムに
 		if (x >= MainPanel.WIDTH) {
 			x = -430;
-			y = (int)(Math.random() * (MainPanel.y2 - MainPanel.y1 - SIZE))+ (int)MainPanel.y1;
+			y = (int)(Math.random() * (MainPanel.y[5] - MainPanel.y[0])) + (int)MainPanel.y[0];
 			//y = MainPanel.y[MainPanel.i];
 		}
 		// 自機と敵の当たり判定

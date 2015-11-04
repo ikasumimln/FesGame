@@ -182,10 +182,10 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			if(sec > hiscore){
 				hiscore = sec;
 				hitime = time;
-				end[3] = new Strings("HISCORE:" + time + "秒", 310, 350, "メイリオ", 20, "RED");
+				end[3] = new Strings("HISCORE:" + time + "秒", 310, 340, "メイリオ", 20, "RED");
 				direction = new Strings("HISCORE:" + time + "sec", 600, 110, "Arial", 20, "RED");
 			}else{
-				end[3] = new Strings("HISCORE:" + hitime + "秒", 310, 350, "メイリオ", 20, "BLACK");
+				end[3] = new Strings("HISCORE:" + hitime + "秒", 310, 340, "メイリオ", 20, "BLACK");
 				direction = new Strings("HISCORE:" + hitime + "sec", 600, 110, "Arial", 20, "BLACK");
 			}
 
