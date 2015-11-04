@@ -35,7 +35,12 @@ public class Strings {
 		Font font = new Font(FONT, Font.PLAIN, SIZE);
 		g2.setFont(font);
 		// 色を設定
-		g2.setColor(Color.getColor(color));
+		if(color.equals("RED")){
+			g2.setColor(Color.RED);
+		}else{
+			g2.setColor(Color.BLACK);
+		}
+
 		// 文字列を描画
 		g2.drawString(str, x, y);
 	}
