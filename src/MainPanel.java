@@ -32,7 +32,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	private int x[] = {-30, -230, -430, -630, -830, -1030};
 	public static int y[] = {160, 210, 260, 310, 360, 410};
 	// アニメーション用スレッド
-	Thread gameThread;
+	Thread gameThread = null;
 	// シーン(0:GameTitle 1:GameMain 2:GameOver)
 	public static int scene = 0;
 	// 秒数
@@ -83,11 +83,20 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			end[0] = new Strings("GAME OVER", 267, 200, "Arial", 40, "BLACK");
 			end[1] = new Strings("Escキーでタイトル", 262, 400, "メイリオ", 30, "BLACK");
 			end[2] = new Strings("Rキーでリトライ", 279, 450, "メイリオ", 30, "BLACK");
-		}
 
-		// スレッドを起動
-		gameThread = new Thread(this);
-		gameThread.start();
+			start();
+		}
+	}
+	// スレッドの起動
+	public void start(){
+		if(gameThread == null){
+			gameThread = new Thread(this);
+			gameThread.start();
+		}
+	}
+	// スレッドの停止
+	public void stop(){
+		gameThread = null;
 	}
 
 	// ゲームスレッドのメイン
@@ -191,7 +200,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 
 			// 時間を表示する文字列の作成
 			end[4] = new Strings(time + "秒逃げ切りました。", 232, 300, "メイリオ", 30, "BLACK");
-			clock = new Strings(time, 330, 100, "DSEG7 Classic", 50, "BLACK");
+			clock = new Strings(time, 330, 100, "DSEG7Classic", 50, "BLACK");
 			// 確認用 System.out.println(t2-t1);
 
 			// 20ミリ秒だけ休止
