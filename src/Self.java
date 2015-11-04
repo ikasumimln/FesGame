@@ -1,6 +1,8 @@
 import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 public class Self extends Applet{
 	// 自機の位置の左上の座標(x, y)
@@ -10,14 +12,26 @@ public class Self extends Applet{
 	// 自機の速度 (vx, vy)
 	protected int vx, vy;
 	// 自機画像(22*40px)
-	private Image Self;
+	private Image self;
 	// グローバル変数
 	public static int sx, sy;
-	
+	private AudioClip se = Applet.newAudioClip(this.getClass().getResource("line.wav"));
 	public void init() {
 		// 画像読み込み(動かない)
-		Self = getImage(getCodeBase(), "Self.gif");
+		self = Toolkit.getDefaultToolkit().getImage(getClass().getResource("image.gif"));
+
 	}
+	// MediaTrackerに登録
+	/*MediaTracker tracker = new MediaTracker(this);
+	tracker.addImage(self, 0);
+
+	// イメージ読み込み完了まで待機
+	try {
+		tracker.waitForID(0);
+	}catch (InterruptedException e) {
+		e.printStackTrace();
+    }
+    */
 	// コンストラクタ（新しい自機オブジェクトを作る工場）
 	public Self(int x, int y, int vx, int vy) {
 		// 敵の属性を設定
@@ -26,35 +40,37 @@ public class Self extends Applet{
 		this.vx = vx;
 		this.vy = vy;
 	}
-	
+
 	public void move() {
 		// グローバル変数に代入
 		sx = x;
 		sy = y;
 		// 敵を速度分だけ移動させる
 		y += vy;
-		
+
 		// 左移動
 		if (MainPanel.keyLeft) {
 			x -= vx;
 			if (x < 0) x = 0;
 		}
-		
+
 		// 右移動
 		if (MainPanel.keyRight) {
 			this.x += vx;
 			if (x > MainPanel.WIDTH - WIDTH) x = MainPanel.WIDTH - WIDTH;
 		}
-		
+
 		// 上または下のLineに当たったらy方向速度の符号を反転させる
 		if (y < MainPanel.y1 || y > MainPanel.y2 - HEIGHT) {
 			vy = -vy;
+			se.play();
 		}
 	}
-	
+
 	public void draw(Graphics g) {
 		// 自機は四角形で代用
 		g.drawRect(x, y, WIDTH, HEIGHT);
+		//g.drawImage(self, x, y, this);
 	}
 }
 
