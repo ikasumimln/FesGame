@@ -1,5 +1,10 @@
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.NumberFormat;
@@ -45,11 +50,27 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	public static int i;
 	private double hiscore = 0;
 	private String hitime = "0";
-
+	public static Image img;
+	public static AudioClip se;
+	private MediaTracker tracker;
+	
+	
 	public MainPanel() {
 		// パネルの推奨サイズを設定、pack()するときに必要
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setSize(WIDTH, HEIGHT);
+		se = Applet.newAudioClip(this.getClass().getResource("line.wav"));
+		// 画像読み込み
+		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("self.gif"));
+		// MediaTrackerに登録
+		tracker = new MediaTracker(this);
+		tracker.addImage(img, 0);
+		// イメージ読み込み完了まで待機
+		try {
+			tracker.waitForID(0);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		if(scene == 0 || scene == 1){
 			// 敵を格納する配列を作成
