@@ -7,8 +7,11 @@ import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.text.NumberFormat;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -51,15 +54,17 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	private double hiscore = 0;
 	private String hitime = "0";
 	public static Image img;
-	public static AudioClip se;
+	public static AudioClip se, bgm;
 	private MediaTracker tracker;
-	
-	
+	private BufferedImage back;
+
 	public MainPanel() {
 		// パネルの推奨サイズを設定、pack()するときに必要
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setSize(WIDTH, HEIGHT);
+		//音声読み込み
 		se = Applet.newAudioClip(this.getClass().getResource("line.wav"));
+		bgm = Applet.newAudioClip(this.getClass().getResource("bgm.wav"));
 		// 画像読み込み
 		img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("self.gif"));
 		// MediaTrackerに登録
@@ -70,6 +75,13 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			tracker.waitForID(0);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
+
+		try{
+			this.back = ImageIO.read(getClass().getResource("back.jpg"));
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			this.back = null;
 		}
 
 		if(scene == 0 || scene == 1){
@@ -86,8 +98,8 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			// 線を格納する配列を作成
 			line = new Line[NUM_LINE];
 			// 線を作成
-			line[0] = new Line(0.0d, y1, 800.0d, y1, "BLACK");
-			line[1] = new Line(0.0d, y2, 800.0d, y2, "BLACK");
+			line[0] = new Line(0.0d, y1, 800.0d, y1, "WHITE");
+			line[1] = new Line(0.0d, y2, 800.0d, y2, "WHITE");
 
 			// 自機を作成
 			self = new Self(389, (int )y1, 9, 14);
@@ -149,6 +161,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			}
 			break;
 		case 1:
+			g.drawImage(back, 0, 0,this);
 			// 各敵を描画
 			for (int i = 0; i < NUM_ENEMY; i++) {
 				enemy[i].draw(g);
@@ -185,6 +198,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 
 	// メインループ
 	public void GameMain() {
+		bgm.loop();
 		// 時間計測開始
 		long t1 = System.nanoTime();
 		// プログラムが終了するまでフレーム処理を繰り返す
@@ -216,12 +230,12 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 				direction = new Strings("HISCORE:" + time + "sec", 600, 110, "Arial", 20, "RED");
 			}else{
 				end[3] = new Strings("HISCORE:" + hitime + "秒", 310, 340, "メイリオ", 20, "BLACK");
-				direction = new Strings("HISCORE:" + hitime + "sec", 600, 110, "Arial", 20, "BLACK");
+				direction = new Strings("HISCORE:" + hitime + "sec", 600, 110, "Arial", 20, "WHITE");
 			}
 
 			// 時間を表示する文字列の作成
 			end[4] = new Strings(time + "秒逃げ切りました。", 232, 300, "メイリオ", 30, "BLACK");
-			clock = new Strings(time, 330, 100, "DSEG7Classic", 50, "BLACK");
+			clock = new Strings(time, 330, 100, "DSEG7 Classic", 50, "WHITE");
 			// 確認用 System.out.println(t2-t1);
 
 			// 20ミリ秒だけ休止
@@ -234,6 +248,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	public void GameOver(){
+		bgm.stop();
 		// キー入力の受け付け開始
 		addKeyListener(this);
 		// フォーカスを要求
