@@ -48,7 +48,7 @@ public class Enemy{
 	// 敵の描画
 	public void draw(Graphics g) {
 		//色を黒に
-		g.setColor(Color.BLACK);
+		g.setColor(Color.WHITE);
 		// 敵の四角形を描画
 		g.drawRect(x, y, SIZE, SIZE);
 	}
