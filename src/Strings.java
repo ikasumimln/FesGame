@@ -37,6 +37,8 @@ public class Strings {
 		// 色を設定
 		if(color.equals("RED")){
 			g2.setColor(Color.RED);
+		}else if(color.equals("WHITE")){
+			g2.setColor(Color.WHITE);
 		}else{
 			g2.setColor(Color.BLACK);
 		}
