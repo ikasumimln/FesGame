@@ -6,13 +6,13 @@ public class Self extends JPanel{
 	// 自機の位置の左上の座標(x, y)
 	private int x, y;
 	// 自機の幅, 高さ(WIDTH, HEIGHT)
-	public static int WIDTH = 22, HEIGHT = 40;
+	public static int WIDTH = 24, HEIGHT = 44;
 	// 自機の速度 (vx, vy)
 	protected int vx, vy;
 	// 自機画像(22*40px)
 	// グローバル変数
 	public static int sx, sy;
-	
+
 	// コンストラクタ（新しい自機オブジェクトを作る工場）
 	public Self(int x, int y, int vx, int vy) {
 		// 敵の属性を設定
@@ -43,15 +43,13 @@ public class Self extends JPanel{
 
 		// 上または下のLineに当たったらy方向速度の符号を反転させる
 		if (y < MainPanel.y1 || y > MainPanel.y2 - HEIGHT) {
-			vy = -vy;
 			MainPanel.se.play();
+			vy = -vy;
 		}
 	}
 
 	public void draw(Graphics g) {
-		// 自機は四角形で代用
-		//g.drawRect(x, y, WIDTH, HEIGHT);
-		g.drawImage(MainPanel.img, x, y, this);
+		g.drawImage(MainPanel.img, x, y, WIDTH, HEIGHT, this);
 	}
 }
 
