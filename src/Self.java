@@ -43,7 +43,6 @@ public class Self extends JPanel{
 
 		// 上または下のLineに当たったらy方向速度の符号を反転させる
 		if (y < MainPanel.y1 || y > MainPanel.y2 - HEIGHT) {
-			MainPanel.se.play();
 			vy = -vy;
 		}
 	}

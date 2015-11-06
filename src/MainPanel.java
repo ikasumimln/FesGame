@@ -102,7 +102,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			line[1] = new Line(0.0d, y2, 800.0d, y2, "WHITE");
 
 			// 自機を作成
-			self = new Self(389, (int )y1, 9, 14);
+			self = new Self(389, (int)y1, 9, 14);
 
 			// 文字列を格納する配列を作成
 			title = new Strings[NUM_TITLE];
@@ -216,6 +216,9 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			self.move();
 			// 再描画
 			repaint();
+			if (Self.sy < y1 || Self.sy > y2 - Self.HEIGHT){
+				se.play();
+			}
 			// 現在の経過時間を代入
 			long t2 = System.nanoTime();
 			sec = (t2 - t1)/1000000000.0;
@@ -255,24 +258,23 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 		requestFocus();
 		// Escが押されたらシーンをタイトルへ
 		if (keyEsc){
+			stop();
+			// 敵を初期化
+			enemy[0] = new Enemy(x[0], y[0], 11);
+			enemy[1] = new Enemy(x[1], y[1], 11);
+			enemy[2] = new Enemy(x[2], y[2], 11);
+			enemy[3] = new Enemy(x[3], y[3], 11);
+			enemy[4] = new Enemy(x[4], y[4], 11);
+			enemy[5] = new Enemy(x[5], y[5], 11);
+
+			// 自機を初期化
+			self = new Self(378, (int )y1, 9, 15);
 			// シーンをタイトルに
 			scene = 0;
-			// 敵を初期化
-			enemy[0] = new Enemy(x[0], y[0], 11);
-			enemy[1] = new Enemy(x[1], y[1], 11);
-			enemy[2] = new Enemy(x[2], y[2], 11);
-			enemy[3] = new Enemy(x[3], y[3], 11);
-			enemy[4] = new Enemy(x[4], y[4], 11);
-			enemy[5] = new Enemy(x[5], y[5], 11);
-
-			// 自機を初期化
-			self = new Self(378, (int )y1, 9, 15);
-			// 再描画
-			repaint();
+			start();
 		}
 		if (keyR){
-			// シーンをタイトルに
-			scene = 1;
+			stop();
 			// 敵を初期化
 			enemy[0] = new Enemy(x[0], y[0], 11);
 			enemy[1] = new Enemy(x[1], y[1], 11);
@@ -282,9 +284,10 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			enemy[5] = new Enemy(x[5], y[5], 11);
 
 			// 自機を初期化
-			self = new Self(378, (int )y1, 9, 15);
-			// 再描画
-			repaint();
+			self = new Self(378, (int )y1+10, 9, 15);
+			// シーンをタイトルに
+			scene = 1;
+			start();
 		}
 	}
 
