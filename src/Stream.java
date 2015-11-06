@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Stream {
 	public static String str;
-	private static File file = new File("bin/score.txt");
+	private static File file = new File("score.txt");
 	private static String path = file.getAbsolutePath();
 	public static void read(){
 		try{
