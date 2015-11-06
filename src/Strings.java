@@ -32,18 +32,37 @@ public class Strings {
 		// アンチエイリアスを有効化
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		// フォントを設定
-		Font font = new Font(FONT, Font.PLAIN, SIZE);
-		g2.setFont(font);
+		/*if(FONT == "DSEG7 Classic"){
+			Font font = createFont("DSEG7Classic-Bold.ttf");
+			font = font.deriveFont(50.0f);
+			g2.setFont(font);
+		}else{*/
+			Font font = new Font(FONT, Font.PLAIN, SIZE);
+			g2.setFont(font);
+		//}
 		// 色を設定
-		if(color.equals("RED")){
-			g2.setColor(Color.RED);
-		}else if(color.equals("WHITE")){
-			g2.setColor(Color.WHITE);
+		if(color.equals("GREEN")){
+			g2.setColor(Color.GREEN);
 		}else{
-			g2.setColor(Color.BLACK);
+			g2.setColor(Color.WHITE);
 		}
 
 		// 文字列を描画
 		g2.drawString(str, x, y);
 	}
+	/*public Font createFont(String filename){
+		Font font = null;
+		InputStream is = null;
+		try {
+		is = getClass().getResourceAsStream(filename);
+		font = Font.createFont(Font.TRUETYPE_FONT, is);
+		is.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}catch(FontFormatException e){
+			e.printStackTrace();
+		}
+		return font;
+	}*/
 }
+

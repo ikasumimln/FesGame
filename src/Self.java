@@ -6,12 +6,11 @@ public class Self extends JPanel{
 	// 自機の位置の左上の座標(x, y)
 	private int x, y;
 	// 自機の幅, 高さ(WIDTH, HEIGHT)
-	public static int WIDTH = 24, HEIGHT = 44;
+	public static final int WIDTH = 32, HEIGHT = 42;
 	// 自機の速度 (vx, vy)
-	protected int vx, vy;
-	// 自機画像(22*40px)
+	private int vx, vy;
 	// グローバル変数
-	public static int sx, sy;
+	static int sx = 0, sy = 0;
 
 	// コンストラクタ（新しい自機オブジェクトを作る工場）
 	public Self(int x, int y, int vx, int vy) {
@@ -22,21 +21,21 @@ public class Self extends JPanel{
 		this.vy = vy;
 	}
 
-	public void move() {
+	public void move(int dir) {
 		// グローバル変数に代入
 		sx = x;
 		sy = y;
-		// 敵を速度分だけ移動させる
+		// 自機を速度分だけ移動させる
 		y += vy;
 
 		// 左移動
-		if (MainPanel.keyLeft) {
+		if (dir == 1) {
 			x -= vx;
 			if (x < 0) x = 0;
 		}
 
 		// 右移動
-		if (MainPanel.keyRight) {
+		if (dir == 2) {
 			this.x += vx;
 			if (x > MainPanel.WIDTH - WIDTH) x = MainPanel.WIDTH - WIDTH;
 		}
@@ -48,7 +47,7 @@ public class Self extends JPanel{
 	}
 
 	public void draw(Graphics g) {
-		g.drawImage(MainPanel.img, x, y, WIDTH, HEIGHT, this);
+		g.drawImage(MainPanel.Simg, x, y, WIDTH, HEIGHT, this);
 	}
 }
 
