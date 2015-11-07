@@ -5,9 +5,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Stream {
+public class StreamN {
 	public static String str;
-	private static File file = new File("score.txt");
+	private static File file = new File("score_easy.txt");
 	private static String path = file.getAbsolutePath();
 	public static void read(){
 		try{
@@ -17,8 +17,8 @@ public class Stream {
 			BufferedReader br = new BufferedReader(fr);
 			// テキスト出力
 			while((str = br.readLine()) != null) {
-				MainPanel.hiscore = Double.parseDouble(str);
-				MainPanel.hitime = str;
+				MainPanel.hiscoreN = Double.parseDouble(str);
+				MainPanel.hitimeN = str;
 			}
 			br.close();
 		} catch(FileNotFoundException e) {

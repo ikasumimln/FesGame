@@ -26,8 +26,8 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	// 敵, 線の数
 	public static final int NUM_ENEMY = 6;
 	private static final int NUM_LINE = 2;
-	private static final int NUM_TITLE = 5;
-	private static final int NUM_END = 5;
+	private static final int NUM_TITLE = 6;
+	private static final int NUM_END = 6;
 	// 敵, 自機, 文字列を格納する配列
 	private Enemy[] enemy;
 	private Line[] line;
@@ -49,20 +49,26 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	public static Timer timer;
 	// 時間表示用String
 	private String time;
-	static double hiscore;
-	static String hitime;
+	static double hiscoreN, hiscoreH;
+	static String hitimeN, hitimeH;
 	// 画像
 	static Image Simg, Eimg;
+	private BufferedImage back0, back1, back2, over;
+	// 音声
 	static AudioClip se, dddn, bgm;
 	private MediaTracker tracker;
-	private BufferedImage back0, back1, back2, over;
+	// sleep(ms)
+	private int ms;
 
 
 	public MainPanel() {
+		setFocusable(true);
+		// キー入力の受け付け開始
+		addKeyListener(this);
 		// パネルの推奨サイズを設定、pack()するときに必要
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setSize(WIDTH, HEIGHT);
-		//音声読み込み
+		// 音声読み込み
 		se = Applet.newAudioClip(this.getClass().getResource("line.wav"));
 		dddn = Applet.newAudioClip(this.getClass().getResource("death.wav"));
 		bgm = Applet.newAudioClip(this.getClass().getResource("bgm.wav"));
@@ -79,7 +85,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
+		// 画像読み込み
 		try{
 			this.back0 = ImageIO.read(getClass().getResource("back0.jpg"));
 			this.back1 = ImageIO.read(getClass().getResource("back1.jpg"));
@@ -92,7 +98,8 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			this.back2 = null;
 			this.over = null;
 		}
-		Stream.read();
+		StreamN.read();
+		StreamH.read();
 
 		if(scene == 0 || scene == 1){
 			// 敵を格納する配列を作成
@@ -117,12 +124,14 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			// 文字列を格納する配列を作成
 			title = new Strings[NUM_TITLE];
 			end = new Strings[NUM_END];
+
 			// 文字列を作成
 			title[0] = new Strings("DeDe DOOM", 272, 200, "メイリオ", 40, "WHITE");
 			title[1] = new Strings("ﾃﾞﾈ!ﾃﾞﾈﾃﾞﾈ!ﾃﾞﾈﾈ、ﾃﾞﾃﾞﾃﾞﾈﾃﾞ!ﾃﾞﾈﾈﾃﾞﾈ!", 150, 300, "メイリオ", 30, "WHITE");
 			title[2] = new Strings("(左右キーで飛んでくる　　を避けてね)", 140, 360, "メイリオ", 30, "WHITE");
 			title[3] = new Strings("Enterキーでスタート", 258, 420, "メイリオ", 30, "WHITE");
-			title[4] = new Strings("Created by @ikasumi_meron", 550, 580, "Arial", 18, "WHITE");
+			title[4] = new Strings("Shiftキーで辛口モード", 246, 460, "メイリオ", 30, "WHITE");
+			title[5] = new Strings("Created by @ikasumi_meron", 550, 580, "Arial", 18, "WHITE");
 
 			end[0] = new Strings("GAME OVER", 272, 200, "Arial", 40, "BLACK");
 			end[1] = new Strings("Escキーでタイトル", 270, 400, "メイリオ", 30, "WHITE");
@@ -198,13 +207,17 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 
 	// ゲームタイトル処理
 	public void GameTitle() {
-		// キー入力の受け付け開始
-		addKeyListener(this);
-		// フォーカスを要求
-		requestFocus();
-
 		// エンターキーが押されたらシーンをゲームメインへ
-		if (keyEnter) scene = 1;
+		if (keyEnter) {
+			ms = 20;
+			end[3] = new Strings("作者記録:139.54秒", 600, 560, "メイリオ", 20, "WHITE");
+			scene = 1;
+		}
+		if(keyShift){
+			ms = 12;
+			end[3] = new Strings("作者記録:26.24秒", 600, 560, "メイリオ", 20, "WHITE");
+			scene = 1;
+		}
 	}
 
 	// メインループ
@@ -214,10 +227,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 		long t1 = System.nanoTime();
 		// プログラムが終了するまでフレーム処理を繰り返す
 		while (scene != 2) {
-			// キー入力の受け付け開始
-			addKeyListener(this);
 			// フォーカスを要求
-			requestFocus();
 
 			// 各敵を速度分だけ移動させる
 			for (int i = 0; i < NUM_ENEMY; i++) {
@@ -250,24 +260,36 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			NumberFormat format = NumberFormat.getInstance();
 			format.setMaximumFractionDigits(2);
 			time = (format.format(sec));
-			if(sec > hiscore){
-				hiscore = sec;
-				hitime = time;
-				end[3] = new Strings("HISCORE:" + time + "秒", 314, 343, "メイリオ", 20, "GREEN");
-				direction = new Strings("HISCORE:" + time + "sec", 600, 110, "Arial", 20, "GREEN");
-			}else{
-				end[3] = new Strings("HISCORE:" + hitime + "秒", 314, 343, "メイリオ", 20, "WHITE");
-				direction = new Strings("HISCORE:" + hitime + "sec", 600, 110, "Arial", 20, "WHITE");
+			if(ms == 20){
+				if(sec > hiscoreN){
+					hiscoreN = sec;
+					hitimeN = time;
+					end[4] = new Strings("HISCORE:" + time + "秒", 314, 343, "メイリオ", 20, "GREEN");
+					direction = new Strings("HISCORE:" + time + "sec", 600, 110, "Arial", 20, "GREEN");
+				}else{
+					end[4] = new Strings("HISCORE:" + hitimeN + "秒", 314, 343, "メイリオ", 20, "WHITE");
+					direction = new Strings("HISCORE:" + hitimeN + "sec", 600, 110, "Arial", 20, "WHITE");
+				}
+			}else if(ms == 12){
+				if(sec > hiscoreH){
+					hiscoreH = sec;
+					hitimeH = time;
+					end[4] = new Strings("HISCORE:" + time + "秒", 314, 343, "メイリオ", 20, "GREEN");
+					direction = new Strings("HISCORE:" + time + "sec", 600, 110, "Arial", 20, "GREEN");
+				}else{
+					end[4] = new Strings("HISCORE:" + hitimeH + "秒", 314, 343, "メイリオ", 20, "WHITE");
+					direction = new Strings("HISCORE:" + hitimeH + "sec", 600, 110, "Arial", 20, "WHITE");
+				}
 			}
 
 			// 時間を表示する文字列の作成
-			end[4] = new Strings(time + "秒逃げ切りました。", 232, 300, "メイリオ", 30, "WHITE");
+			end[5] = new Strings(time + "秒逃げ切りました。", 232, 300, "メイリオ", 30, "WHITE");
 			clock = new Strings(time, 330, 100, "DSEG7 Classic", 50, "WHITE");
 			// 確認用 System.out.println(t2-t1);
 
 			// 20ミリ秒だけ休止
 			try {
-				Thread.sleep(20);
+				Thread.sleep(ms);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -275,17 +297,19 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	public void GameOver(){
-		Stream.write(hitime);
+		if(ms == 20) StreamN.write(hitimeN);
+		if(ms == 12) StreamH.write(hitimeH);
 		bgm.stop();
-		System.gc();
-		// キー入力の受け付け開始
 		addKeyListener(this);
-		// フォーカスを要求
-		requestFocus();
 		// Shift+Enterでハイスコアをリセット
 		if (keyEnter && keyShift){
-			Stream.write("0");
-			Stream.read();
+			if(ms == 20){
+				StreamN.write("0");
+				StreamN.read();
+			}else if(ms == 12){
+				StreamH.write("0");
+				StreamH.read();
+			}
 			se.play();
 		}
 		// Escが押されたらシーンをタイトルへ
@@ -350,7 +374,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			// Rキーが離されたとき
 			case KeyEvent.VK_R: keyR = false; break;
 			// Shiftキーが押されたとき
-			case KeyEvent.VK_SHIFT: keyShift = true; break;
+			case KeyEvent.VK_SHIFT: keyShift = false; break;
 		}
 	}
 

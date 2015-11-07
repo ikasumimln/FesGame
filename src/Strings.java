@@ -3,7 +3,6 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +17,11 @@ public class Strings {
 	private String str;
 	private String color;
 
+	/*public void font(){
+		Font DSEG = createFont("DSEG7Classic-Bold.ttf");
+		GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(DSEG);
+	}*/
+
 	// コンストラクタ（新しい線オブジェクトを作る工場）
 	public Strings(String str, int x, int y, String FONT, int SIZE, String color) {
 		// 線の属性を設定
@@ -27,7 +31,6 @@ public class Strings {
 		this.FONT = FONT;
 		this.SIZE = SIZE;
 		this.color = color;
-
 	}
 
 	// 文字列の描画
@@ -36,8 +39,6 @@ public class Strings {
 		// アンチエイリアスを有効化
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		// フォントを設定
-		Font DSEG = createFont("DSEG7Classic-Bold.ttf");
-		GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(DSEG);
 		Font font = new Font(FONT, Font.PLAIN, SIZE);
 		g2.setFont(font);
 		//}
