@@ -6,7 +6,7 @@ public class FesGame extends JFrame {
 
 	public FesGame() {
 		// タイトルを設定
-		setTitle("DEDE DOOM");
+		setTitle("DeDe DOOM");
 		// サイズ変更禁止
 		setResizable(false);
 

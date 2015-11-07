@@ -31,8 +31,8 @@ public class Enemy extends JPanel{
 			y = (int)(Math.random() * (MainPanel.y[5] - MainPanel.y[0])) + (int)MainPanel.y[0];
 		}
 		// 自機と敵の当たり判定
-		if(Self.sx + Self.WIDTH >= x &&
-			Self.sx <= x + SIZE &&
+		if(Self.sx + Self.WIDTH >= x + 10 &&
+			Self.sx <= x + SIZE -10 &&
 			Self.sy + Self.HEIGHT >= y &&
 			Self.sy <= y + SIZE) {
 			// 敵に触れるとシーンをGameOverへ
@@ -43,6 +43,6 @@ public class Enemy extends JPanel{
 	}
 	// 敵の描画
 	public void draw(Graphics g) {
-		g.drawImage(MainPanel.Eimg, x-2, y-2, this);
+		g.drawImage(MainPanel.Eimg, x + 10, y, this);
 	}
 }

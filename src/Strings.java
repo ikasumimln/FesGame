@@ -1,8 +1,12 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Strings {
 	// フォントの種類, 大きさ
@@ -32,13 +36,10 @@ public class Strings {
 		// アンチエイリアスを有効化
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		// フォントを設定
-		/*if(FONT == "DSEG7 Classic"){
-			Font font = createFont("DSEG7Classic-Bold.ttf");
-			font = font.deriveFont(50.0f);
-			g2.setFont(font);
-		}else{*/
-			Font font = new Font(FONT, Font.PLAIN, SIZE);
-			g2.setFont(font);
+		Font DSEG = createFont("DSEG7Classic-Bold.ttf");
+		GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(DSEG);
+		Font font = new Font(FONT, Font.PLAIN, SIZE);
+		g2.setFont(font);
 		//}
 		// 色を設定
 		if(color.equals("GREEN")){
@@ -50,7 +51,7 @@ public class Strings {
 		// 文字列を描画
 		g2.drawString(str, x, y);
 	}
-	/*public Font createFont(String filename){
+	public Font createFont(String filename){
 		Font font = null;
 		InputStream is = null;
 		try {
@@ -63,6 +64,6 @@ public class Strings {
 			e.printStackTrace();
 		}
 		return font;
-	}*/
+	}
 }
 

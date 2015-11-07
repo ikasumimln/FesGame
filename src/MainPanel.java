@@ -98,12 +98,12 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			// 敵を格納する配列を作成
 			enemy = new Enemy[NUM_ENEMY];
 			// 敵を作成
-			enemy[0] = new Enemy(x[0], y[0], 11);
-			enemy[1] = new Enemy(x[1], y[1], 11);
-			enemy[2] = new Enemy(x[2], y[2], 11);
-			enemy[3] = new Enemy(x[3], y[3], 11);
-			enemy[4] = new Enemy(x[4], y[4], 11);
-			enemy[5] = new Enemy(x[5], y[5], 11);
+			enemy[0] = new Enemy(x[0], y[0], 9);
+			enemy[1] = new Enemy(x[1], y[1], 9);
+			enemy[2] = new Enemy(x[2], y[2], 9);
+			enemy[3] = new Enemy(x[3], y[3], 9);
+			enemy[4] = new Enemy(x[4], y[4], 9);
+			enemy[5] = new Enemy(x[5], y[5], 9);
 
 			// 線を格納する配列を作成
 			line = new Line[NUM_LINE];
@@ -112,35 +112,25 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			line[1] = new Line(0.0d, y2, 800.0d, y2, "WHITE");
 
 			// 自機を作成
-			self = new Self(389, (int)y1, 9, 14);
+			self = new Self(389, (int)y1, 8, 12);
 
 			// 文字列を格納する配列を作成
 			title = new Strings[NUM_TITLE];
 			end = new Strings[NUM_END];
 			// 文字列を作成
 			title[0] = new Strings("DeDe DOOM", 272, 200, "メイリオ", 40, "WHITE");
-			title[1] = new Strings("ﾃﾞﾈ!ﾃﾞﾈﾃﾞﾈ!ﾃﾞﾈﾈ、ﾃﾞﾃﾞﾃﾞﾈﾃﾞ!ﾃﾞﾈﾈﾃﾞﾈ!", 150, 280, "メイリオ", 30, "WHITE");
-			title[2] = new Strings("(左右キーで飛んでくるオリを避けてね)", 140, 340, "メイリオ", 30, "WHITE");
-			title[3] = new Strings("Enterキーでスタート", 258, 400, "メイリオ", 30, "WHITE");
+			title[1] = new Strings("ﾃﾞﾈ!ﾃﾞﾈﾃﾞﾈ!ﾃﾞﾈﾈ、ﾃﾞﾃﾞﾃﾞﾈﾃﾞ!ﾃﾞﾈﾈﾃﾞﾈ!", 150, 300, "メイリオ", 30, "WHITE");
+			title[2] = new Strings("(左右キーで飛んでくる　　を避けてね)", 140, 360, "メイリオ", 30, "WHITE");
+			title[3] = new Strings("Enterキーでスタート", 258, 420, "メイリオ", 30, "WHITE");
 			title[4] = new Strings("Created by @ikasumi_meron", 550, 580, "Arial", 18, "WHITE");
 
 			end[0] = new Strings("GAME OVER", 272, 200, "Arial", 40, "BLACK");
 			end[1] = new Strings("Escキーでタイトル", 270, 400, "メイリオ", 30, "WHITE");
 			end[2] = new Strings("Rキーでリトライ", 286, 450, "メイリオ", 30, "WHITE");
 
-			start();
-		}
-	}
-	// スレッドの起動
-	public void start(){
-		if(gameThread == null){
 			gameThread = new Thread(this);
 			gameThread.start();
 		}
-	}
-	// スレッドの停止
-	public void stop(){
-		gameThread = null;
 	}
 
 	// ゲームスレッドのメイン
@@ -168,6 +158,9 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 		case 0:
 			// 背景を描画
 			g.drawImage(back0, 0, 0,this);
+			// デデンネ
+			g.drawImage(Simg, 384, 219, this);
+			g.drawImage(Eimg, 464, 332, this);
 			// 文字列を描画
 			for (int l = 0; l < NUM_TITLE; l++) {
 				title[l].paintComponent(g);
@@ -297,36 +290,31 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 		}
 		// Escが押されたらシーンをタイトルへ
 		if (keyEsc){
-			stop();
 			// 敵を初期化
-			enemy[0] = new Enemy(x[0], y[0], 11);
-			enemy[1] = new Enemy(x[1], y[1], 11);
-			enemy[2] = new Enemy(x[2], y[2], 11);
-			enemy[3] = new Enemy(x[3], y[3], 11);
-			enemy[4] = new Enemy(x[4], y[4], 11);
-			enemy[5] = new Enemy(x[5], y[5], 11);
+			enemy[0] = new Enemy(x[0], y[0], 9);
+			enemy[1] = new Enemy(x[1], y[1], 9);
+			enemy[2] = new Enemy(x[2], y[2], 9);
+			enemy[3] = new Enemy(x[3], y[3], 9);
+			enemy[4] = new Enemy(x[4], y[4], 9);
+			enemy[5] = new Enemy(x[5], y[5], 9);
 			// 自機を初期化
-			self = new Self(378, (int )y1, 9, 14);
+			self = new Self(378, (int )y1, 8, 10);
 			// シーンをタイトルに
 			scene = 0;
 			repaint();
-			start();
 		}
 		if (keyR){
-			stop();
 			// 敵を初期化
-			enemy[0] = new Enemy(x[0], y[0], 11);
-			enemy[1] = new Enemy(x[1], y[1], 11);
-			enemy[2] = new Enemy(x[2], y[2], 11);
-			enemy[3] = new Enemy(x[3], y[3], 11);
-			enemy[4] = new Enemy(x[4], y[4], 11);
-			enemy[5] = new Enemy(x[5], y[5], 11);
-
+			enemy[0] = new Enemy(x[0], y[0], 9);
+			enemy[1] = new Enemy(x[1], y[1], 9);
+			enemy[2] = new Enemy(x[2], y[2], 9);
+			enemy[3] = new Enemy(x[3], y[3], 9);
+			enemy[4] = new Enemy(x[4], y[4], 9);
+			enemy[5] = new Enemy(x[5], y[5], 9);
 			// 自機を初期化
-			self = new Self(378, (int )y1, 9, 14);
+			self = new Self(378, (int )y1, 8, 10);
 			// シーンをタイトルに
 			scene = 1;
-			start();
 		}
 	}
 
