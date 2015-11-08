@@ -49,7 +49,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	public static Timer timer;
 	// 時間表示用String
 	private String time;
-	static double hiscoreN, hiscoreH;
+	static double hiscoreN = 0, hiscoreH = 0;
 	static String hitimeN, hitimeH;
 	// 画像
 	static Image Simg, Eimg;
@@ -59,6 +59,7 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	private MediaTracker tracker;
 	// sleep(ms)
 	private int ms;
+	private int flag;
 
 
 	public MainPanel() {
@@ -262,21 +263,25 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 			time = (format.format(sec));
 			if(ms == 20){
 				if(sec > hiscoreN){
+					flag = 0;
 					hiscoreN = sec;
 					hitimeN = time;
-					end[4] = new Strings("HISCORE:" + time + "秒", 314, 343, "メイリオ", 20, "GREEN");
-					direction = new Strings("HISCORE:" + time + "sec", 600, 110, "Arial", 20, "GREEN");
+					end[4] = new Strings("HISCORE:" + hitimeN + "秒", 314, 343, "メイリオ", 20, "GREEN");
+					direction = new Strings("HISCORE:" + hitimeN + "sec", 600, 110, "Arial", 20, "GREEN");
 				}else{
+					flag = 1;
 					end[4] = new Strings("HISCORE:" + hitimeN + "秒", 314, 343, "メイリオ", 20, "WHITE");
 					direction = new Strings("HISCORE:" + hitimeN + "sec", 600, 110, "Arial", 20, "WHITE");
 				}
 			}else if(ms == 12){
 				if(sec > hiscoreH){
+					flag = 2;
 					hiscoreH = sec;
 					hitimeH = time;
-					end[4] = new Strings("HISCORE:" + time + "秒", 314, 343, "メイリオ", 20, "GREEN");
-					direction = new Strings("HISCORE:" + time + "sec", 600, 110, "Arial", 20, "GREEN");
+					end[4] = new Strings("HISCORE:" + hitimeH + "秒", 314, 343, "メイリオ", 20, "GREEN");
+					direction = new Strings("HISCORE:" + hitimeH + "sec", 600, 110, "Arial", 20, "GREEN");
 				}else{
+					flag = 3;
 					end[4] = new Strings("HISCORE:" + hitimeH + "秒", 314, 343, "メイリオ", 20, "WHITE");
 					direction = new Strings("HISCORE:" + hitimeH + "sec", 600, 110, "Arial", 20, "WHITE");
 				}
@@ -297,21 +302,14 @@ public class MainPanel extends JPanel implements Runnable, KeyListener {
 	}
 
 	public void GameOver(){
-		if(ms == 20) StreamN.write(hitimeN);
-		if(ms == 12) StreamH.write(hitimeH);
 		bgm.stop();
+		if(flag == 0) StreamN.write(hitimeN);
+		if(flag == 1) StreamN.write(hitimeN);
+		if(flag == 2) StreamH.write(hitimeH);
+		if(flag == 3) StreamN.write(hitimeH);
+	
 		addKeyListener(this);
-		// Shift+Enterでハイスコアをリセット
-		if (keyEnter && keyShift){
-			if(ms == 20){
-				StreamN.write("0");
-				StreamN.read();
-			}else if(ms == 12){
-				StreamH.write("0");
-				StreamH.read();
-			}
-			se.play();
-		}
+
 		// Escが押されたらシーンをタイトルへ
 		if (keyEsc){
 			// 敵を初期化
